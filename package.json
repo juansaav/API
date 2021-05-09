@@ -1,0 +1,23 @@
+{
+  "name": "moviescds",
+  "version": "1.0.0",
+  "description": "Movies Codigo del Sur",
+  "main": "dist/index.js",
+  "scripts": {
+    "start:dist": "tsc -w",
+    "start:run": "nodemon dist/app.js",
+    "start": "concurrently npm:start:*"
+  },
+  "author": "Juan Saavedra",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "@types/node": "^13.7.7",
+    "tsc-watch": "^4.2.9",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
