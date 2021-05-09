@@ -1,11 +1,14 @@
 
 
-Compile and run
+# Typescript
+# Compile and run
 
 npm start
 
 
 
 
+# Prisma
 
-
+npx prisma migrate dev --name init
+prisma generate

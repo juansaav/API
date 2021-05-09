@@ -1,7 +1,10 @@
+
+import dotenv from 'dotenv'
 var express = require("express"); 
 var app = express();
 
 // Instantiating the Express object.
+dotenv.config();
 var app = express();
 
 // Handles whenever the root directory of the website is accessed.
@@ -11,6 +14,6 @@ app.get("/", function(req, res) {
 });
 
 // Set app to listen on port 3000
-app.listen(3000, function() { 
-   console.log("server is running on port 3000");
+app.listen(process.env.PORT, function() { 
+   console.log("server is running on port " + process.env.PORT);
 });

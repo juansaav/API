@@ -1,0 +1,40 @@
+datasource db {
+  provider = "sqlite"
+  url      =  env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+} 
+ 
+model Movie {
+  id        Int     @id @default(autoincrement())
+  adult             Boolean
+  backdrop_path     String
+  genre_ids         int[]
+  original_language String
+  overview          String
+  popularity        Float
+  poster_path       String
+  release_date      String
+  title             String
+  video             Boolean
+  vote_average      Float
+  vote_count        Int 
+}
+
+model User {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  firstname  String?
+  lastname  String?
+  password  String?
+  salt  String?
+  favourite_movies Movie[]
+}
+
+model Configuration {
+  id    Int     @id @default(autoincrement())
+  key   String  @unique 
+  value String 
+}
