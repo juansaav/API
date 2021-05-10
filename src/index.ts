@@ -1,19 +1,35 @@
+import express from 'express';
+import dotenv from 'dotenv';
 
-import dotenv from 'dotenv'
-var express = require("express"); 
-var app = express();
+import { UserDA } from './DA/index';
+import { UserService } from './services/index';
+import { UserRouter } from "./routes/index";
 
-// Instantiating the Express object.
-dotenv.config();
-var app = express();
+import { ConfigurationDA } from './DA/index';
+import { ConfigurationService } from './services/index';
 
-// Handles whenever the root directory of the website is accessed.
-app.get("/", function(req, res) {
-  // Respond with Express
-  res.send("Hello world!");
-});
+// Initial configuration
 
-// Set app to listen on port 3000
+dotenv.config(); 
+const app = express();
+const router = express.Router();
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use('/', router);
+
+
+// Define Routers
+
+UserRouter(router, new UserService(new UserDA()));
+
+// Start app
+
 app.listen(process.env.PORT, function() { 
-   console.log("server is running on port " + process.env.PORT);
+	
+   console.log("Server is running on port " + process.env.PORT);
+
+   // Import movies if neccesary
+   let configService = new ConfigurationService(new ConfigurationDA());
+   configService.importMovies();
+
 });

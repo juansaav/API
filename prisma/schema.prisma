@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      =  env("DATABASE_URL")
+  provider = "sqlite"  
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -10,8 +10,7 @@ generator client {
 model Movie {
   id        Int     @id @default(autoincrement())
   adult             Boolean
-  backdrop_path     String
-  genre_ids         int[]
+  backdrop_path     String 
   original_language String
   overview          String
   popularity        Float
@@ -21,6 +20,7 @@ model Movie {
   video             Boolean
   vote_average      Float
   vote_count        Int 
+  user_favourite    User[]
 }
 
 model User {

@@ -1,58 +1,21 @@
-import { IUser } from "../interfaces/IUser"; 
+import { IUser, IUserInputDTO } from "../interfaces/IUser"; 
+import { db } from "../da/dbconnection"; 
 
+export class UserDA { 
 
-export class StudentDA {
-    public async GetUser() {
-        const query = "select * from student"
-        try {
-            const data = await this.ReadData(query);
-            return data;
-        }
-        catch (err) {
-            throw err;
-        }
+    public async GetUser(email: string) { 
+        var user = await db.user.findUnique({
+          where: {
+            email: email,
+          },
+        })
+        return user;
     }
 
-    public async GetUser(id: string) {
-        const query = "select * from student where id  = ?";
-        try {
-            const data = await this.ReadData(query, [id]);
-            return data;
-        }
-        catch (err) {
-            throw err;
-        }
+    public async CreateUser(newUser: IUserInputDTO) {
+        const user = await db.user.create({
+          data: newUser       
+        })
     }
-
-    public async CreateStudent(data: IStudent) {
-        const query = "insert into student(id, name, email, age) values(?,?,?,?)";
-        try {
-            const result = await this.InsertOrUpdateData(query, [data.id, data.name, data.email, data.age]);
-            return result;
-        }
-        catch (err) {
-
-        }
-    }
-
-    public async UpdateStudent(data: IStudent) {
-        const query = "update student set name=?, email=?, age=? where id = ?";
-        try {
-            const result = await this.InsertOrUpdateData(query, [data.name, data.email, data.age, data.id]);
-            return result;
-        }
-        catch (err) {
-            throw err;
-        }
-    }
-
-    public async DeleteStudent(id: string) {
-        const query = "delete from student where id = ?";
-        try {
-            const result = await this.DeleteData(query, [id]);
-            return result;
-        } catch (error) {
-            throw error;
-        }
-    }
+ 
 }
