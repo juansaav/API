@@ -9,19 +9,21 @@ generator client {
  
 model Movie {
   id        Int     @id @default(autoincrement())
-  adult             Boolean
-  backdrop_path     String 
-  original_language String
-  overview          String
-  popularity        Float
-  poster_path       String
-  release_date      String
-  title             String
-  video             Boolean
-  vote_average      Float
-  vote_count        Int 
+  adult             Boolean?
+  backdrop_path     String?  
+  original_language String?
+  original_title    String?
+  overview          String?
+  popularity        Float?
+  poster_path       String?
+  release_date      String?
+  title             String?
+  video             Boolean?
+  vote_average      Float?
+  vote_count        Int?
   user_favourite    User[]
 }
+ 
 
 model User {
   id    Int     @id @default(autoincrement())

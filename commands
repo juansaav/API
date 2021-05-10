@@ -11,4 +11,6 @@ npm start
 # Prisma
 
 npx prisma migrate dev --name init
+
+npx prisma db push --force-reset --preview-feature
 npx prisma generate
