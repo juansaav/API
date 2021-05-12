@@ -14,6 +14,9 @@ export class MovieService {
         }
     } 
 
-    //public async CreateMovies(newUser: IUserInputDTO) {
-    //}  
+    public async InsertMovies(movies : [IMovieInputDTO]) {
+        for (var newM of movies) {
+            this.movieda.CreateMovie(newM);
+        } 
+    }   
 }

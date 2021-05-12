@@ -1,16 +1,12 @@
+
+// Imports
+
 import express from 'express';
 import dotenv from 'dotenv';
-
-import { UserDA } from './DA/index';
-import { UserService } from './services/index';
-import { UserRouter } from "./routes/index";
-
-import { ConfigurationDA } from './DA/index';
-import { ConfigurationService } from './services/index';
-
-import { MovieDA } from './DA/index';
-import { MovieService } from './services/index';
-import { MovieRouter } from "./routes/index";
+import config from './config'; 
+import { UserDA, ConfigurationDA, MovieDA } from './DA/index'; 
+import { UserService, ConfigurationService, MovieService } from './services/index'; 
+import { MovieRouter, UserRouter } from "./routes/index";
 
 // Initial configuration
 
@@ -31,12 +27,11 @@ MovieRouter(router, new MovieService(new MovieDA()));
 
 // Start app
 
-app.listen(process.env.PORT, function() { 
+app.listen(config.PORT, function() { 
 	
-   console.log("Server is running on port " + process.env.PORT);
+   console.log("Server is running on port " + config.PORT);
 
    // Import movies if required
-
    let configService = new ConfigurationService(new ConfigurationDA(), new MovieDA());
    configService.importMovies();
 
