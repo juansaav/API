@@ -15,3 +15,11 @@ npx prisma migrate dev --name init
 npx prisma db push --force-reset --preview-feature
 npx prisma generate
 npm start
+
+
+Todo
+
+Logger
+Dependendy injection
+Manejo de errores
+Tipado de salida, mapping de objetos

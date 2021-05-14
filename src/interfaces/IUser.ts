@@ -1,13 +1,13 @@
 import { IMovie } from "./IMovie"; 
 
 export interface IUser {
-  _id: string;
+  _id?: number;
   email: string;
   firstname: string;
   lastname: string;
-  password: string;
-  salt: string;
-  favourite_movies: IMovie[];
+  password?: string;
+  salt?: string;
+  favourite_movies?: IMovie[];
 }
 
 export interface IUserInputDTO {
@@ -16,5 +16,3 @@ export interface IUserInputDTO {
   lastname: string;
   password: string;
 }
-
- 

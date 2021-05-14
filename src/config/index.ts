@@ -11,6 +11,10 @@ export default {
   PORT: parseInt(process.env.PORT),
 
   // THEMOVIEDB
-  THEMOVIEDB_KEY: process.env.THEMOVIEDB_KEY
+  THEMOVIEDB_KEY: process.env.THEMOVIEDB_KEY,
+
+  // JWT  
+  JWT_SECRET: process.env.JWT_SECRET,
+  JWT_ALGORITHM: process.env.JWT_ALGORITHM,
 
 }

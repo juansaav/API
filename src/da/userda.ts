@@ -3,7 +3,7 @@ import { db } from "../da/dbconnection";
 
 export class UserDA { 
 
-    public async GetUser(email: string) { 
+    public async GetUser(email: string): Promise<IUser>  { 
         var user = await db.user.findUnique({
           where: {
             email: email,
@@ -12,10 +12,11 @@ export class UserDA {
         return user;
     }
 
-    public async CreateUser(newUser: IUserInputDTO) {
+    public async CreateUser(newUser: IUser): Promise<IUser>   {
         const user = await db.user.create({
           data: newUser       
         })
+        return user;
     }
  
 }
