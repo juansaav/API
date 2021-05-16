@@ -19,19 +19,7 @@ export class ConfigurationService {
             if ( !data ) {
               
                 // Movies not imported, import them  
-                console.log("Importing movies from themoviedb.org...")
-                
-                const baseUrl = process.env.THEMOVIEDB_URL;
-                const queryString = '?api_key=' + config.THEMOVIEDB_KEY;  
-                var options = {
-                    uri: baseUrl + queryString,
-                };
-
-                const resp = <string> await request.get(options);
-                const movies = JSON.parse(resp).results; 
- 
-                movieService.InsertMovies(movies);
-                console.log("Finished importing.")
+                movieService.ImportMovies();
 
                 // Movies imported insert config
                 const insert: IConfigurationInputDTO = {

@@ -4,9 +4,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import config from './config'; 
-import { UserDA, ConfigurationDA, MovieDA } from './DA/index'; 
-import { UserService, ConfigurationService, MovieService } from './services/index'; 
-import { MovieRouter, UserRouter } from "./routes/index";
+import { UserDA, ConfigurationDA, MovieDA } from './DA'; 
+import { UserService, ConfigurationService, MovieService, SessionService } from './services'; 
+import { MovieRouter, UserRouter, SessionRouter } from "./routes";
 
 // Initial configuration
 
@@ -24,12 +24,14 @@ app.use('/', router);
 
 UserRouter(router, new UserService(new UserDA()));
 MovieRouter(router, new MovieService(new MovieDA()));
+SessionRouter(router, new SessionService(new UserDA()));
 
 // Start app
 
-app.listen(config.PORT, function() { 
-	
-   console.log("Server is running on port " + config.PORT);
+app.listen(config.PORT, function() {  
+   console.log("##############################\n"+
+   	           "Server is running on port " + config.PORT + "\n" + 
+   	           "##############################");
 
    // Import movies if required
    let configService = new ConfigurationService(new ConfigurationDA(), new MovieDA());

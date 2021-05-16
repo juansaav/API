@@ -28,16 +28,15 @@ export class UserService {
         try {
               console.log('Sign up service ');
 
-              //Check email already used
-              var exists = this.GetUser(userInputDTO.email);
-
+              //Check email already used 
+              var exists = await this.GetUser(userInputDTO.email); 
               if ( !exists ) {
 
                   // Hash pwd using salt. This is used to better secure the pwd
                   const salt = randomBytes(32);
                   const hashedPassword = await argon2.hash(userInputDTO.password, { salt });
 
-                  // Create user
+                  // Create user TODO Object maper
                   const user = await this.userda.CreateUser({
                     email: userInputDTO.email,
                     firstname: userInputDTO.firstname,
@@ -47,7 +46,7 @@ export class UserService {
                   });
  
                   // Generate token
-                  const token = sessionService.generateToken(uret);
+                  const token = sessionService.generateToken(user);
 
                   if (!user) {
                     throw new Error('User cannot be created');

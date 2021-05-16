@@ -6,18 +6,20 @@ import { UserService } from '../services';
 import { UserDA } from '../da'; 
 import config from '../config';
  
-export default class SessionService {
+export class SessionService {
   constructor(private userda: UserDA ) { }
 
   
   public async SignIn(email: string, password: string): Promise<{ user: IUser; token: string }> {
 
-        const userService = new UserService(this.userda);
+      console.log('Sign in service');
+      
+      const userService = new UserService(this.userda);
 
-        // User from db
-	    const user = await userService.GetUser(email);
-	    
-	    // Check exists
+      // User from db
+	    const user = await userService.GetUser(email); 
+
+	    // Check if exists
 	    if (!user) {
 	      throw new Error('User not registered');
 	    } 
@@ -26,7 +28,6 @@ export default class SessionService {
 	    const validPassword = await argon2.verify(user.password, password);
 	    if (validPassword) {
 
-	      // Valid password
 	      console.log('Password is valid');
 
 	      // Generate token
@@ -44,7 +45,7 @@ export default class SessionService {
 	    }
   }
 
-  private generateToken(user) {
+  public generateToken(user) {
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
@@ -59,5 +60,5 @@ export default class SessionService {
       },
       config.JWT_SECRET
     );
-  }i
+  }
 }
