@@ -20,15 +20,35 @@ export class UserService {
         }
     } 
 
-    // Sign up
-    public async CreateUser(userInputDTO: IUserInputDTO) : Promise<{ user: IUser; token: string }>   {
+    // Get favourite Movies for User
+    public async GetFavouriteMovies(userId: number) {
+        try {
+            const data = await this.userda.GetFauvoriteMovies(userId);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    } 
+
+    // Add favourite Movie 
+    public async AddFavouriteMovie(userId: number, movieId) {
+        try {
+            const data = await this.userda.AddFauvoriteMovie(userId, movieId);
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    } 
+
+    // Create User
+    public async CreateUser(userInputDTO: IUserInputDTO) : Promise<IUser>   {
 
         const sessionService = new SessionService(this.userda);
         
         try {
               console.log('Sign up service ');
 
-              //Check email already used 
+              //Check if email is already in use 
               var exists = await this.GetUser(userInputDTO.email); 
               if ( !exists ) {
 
@@ -36,18 +56,9 @@ export class UserService {
                   const salt = randomBytes(32);
                   const hashedPassword = await argon2.hash(userInputDTO.password, { salt });
 
-                  // Create user TODO Object maper
-                  const user = await this.userda.CreateUser({
-                    email: userInputDTO.email,
-                    firstname: userInputDTO.firstname,
-                    lastname: userInputDTO.lastname,
-                    salt: salt.toString('hex'),
-                    password: hashedPassword,
-                  });
+                  // Create user 
+                  const user = await this.userda.CreateUser(userInputDTO);
  
-                  // Generate token
-                  const token = sessionService.generateToken(user);
-
                   if (!user) {
                     throw new Error('User cannot be created');
                   } 
@@ -57,7 +68,7 @@ export class UserService {
                   Reflect.deleteProperty(user, 'salt');
 
                   // Return user and token  
-                  return { user, token };
+                  return user;
         
               } else {  
                 // Email already in use.         
@@ -68,6 +79,5 @@ export class UserService {
               console.log(e);
               throw e;
         }
-      }
-    }  
-}
+    }
+}  

@@ -1,6 +1,6 @@
 import { IUser } from "./IUser"; 
 export interface IMovie {
-  _id: string;
+  id: number;
   adult: boolean;
   backdrop_path: string; 
   original_language: string;
@@ -12,11 +12,11 @@ export interface IMovie {
   title: string; 
   video: boolean; 
   vote_average: number; 
-  vote_count: number; 
-  user_favourite: IUser[];
+  vote_count: number;  
 }  
 
 export interface IMovieInputDTO { 
+  id: number;
   adult: boolean;
   backdrop_path: string; 
   original_language: string;

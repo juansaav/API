@@ -7,7 +7,7 @@ export interface IUser {
   lastname: string;
   password?: string;
   salt?: string;
-  favourite_movies?: IMovie[];
+  movies?: IMovie[];
 }
 
 export interface IUserInputDTO {
