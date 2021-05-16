@@ -28,23 +28,23 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
 
             // Call service
             const { email, password } = req.body;
-            console.log(email + password);
             const data = await service.SignIn(email, password);
             res.status(200).send(data);
         }
         catch (err) {
-            res.status(500).send({ "err": err })
+            console.log(err.message);             
+            res.status(500).send(err.message)
         }
     })
 
     // Logout
     route.delete('/:id',middlewares.isAuth, async (req: Request, res: Response) => {
         try { 
-            console.log("Logout session " + req.params.id);
             res.status(200).end();
         }
-        catch (err) {
-            res.status(500).send({ "err": err })
+        catch (err) {         
+            console.log(err.message);    
+            res.status(500).send(err.message)
         }
     })
 }

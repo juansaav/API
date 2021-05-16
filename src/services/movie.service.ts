@@ -7,24 +7,23 @@ export class MovieService {
 
     constructor(private movieda: MovieDA) { }
    
+    // Get all movies
     public async GetAllMovies() {
-        try {
-            const data = await this.movieda.GetAllMovies();
-            return data;
-        } catch (error) {
-            throw error;
-        }
+        console.log("Get all movies")
+        return await this.movieda.GetAllMovies();          
     } 
 
+    // Insert list of movies
     public async InsertMovies(movies : [IMovieInputDTO]) {
+        console.log("Insert movies")
         for (var newM of movies) {
+            newM.suggestionScoreforToday = Math.floor(Math.random() * 100);
             this.movieda.CreateMovie(newM);
-        } 
+        }
     }   
 
-
-    public async ImportMovies() {
-        // Import movies
+    // Import movies from themoviedb
+    public async ImportMovies() { 
         console.log("Importing movies from themoviedb.org...")
         
         const baseUrl = process.env.THEMOVIEDB_URL;

@@ -38,3 +38,11 @@ app.listen(config.PORT, function() {
    configService.importMovies();
 
 });
+
+/**
+     * Handle 401 thrown by express-jwt library
+     */
+app.use((err, req, res, next) => {  
+if (err.name === 'UnauthorizedError') {    
+	res.status(401).json({"error" : err.name + ": " + err.message})  
+}})

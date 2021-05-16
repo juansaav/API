@@ -9,10 +9,10 @@ import config from '../config';
 export class SessionService {
   constructor(private userda: UserDA ) { }
 
-  
-  public async SignIn(email: string, password: string): Promise<{ user: IUser; token: string }> {
+  // Login service  
+  public async SignIn(email: string, password: string): Promise<{ token: string }> {
 
-      console.log('Sign in service');
+      console.log('Sign in service email:' + email);
       
       const userService = new UserService(this.userda);
 
@@ -25,21 +25,25 @@ export class SessionService {
 	    } 
 
 	    // Verify password using salt
+      console.log('Password argon2 ' + user.password);
 	    const validPassword = await argon2.verify(user.password, password);
+        console.log('Password argon22');
 	    if (validPassword) {
 
+        // Valid password
 	      console.log('Password is valid');
 
 	      // Generate token
 	      console.log('Generate JWT');
 	      const token = this.generateToken(user);
 
-          // Delete sensible data
-          Reflect.deleteProperty(user, 'password');
-          Reflect.deleteProperty(user, 'salt');
+        // Delete sensible data
+        Reflect.deleteProperty(user, 'password');
+        Reflect.deleteProperty(user, 'salt');
 
-	      // Return user and token 
-	      return { user, token };
+	      // Return token 
+	      return { token };
+        
 	    } else {
 	      throw new Error('Invalid Password');
 	    }

@@ -13,6 +13,7 @@ export interface IMovie {
   video: boolean; 
   vote_average: number; 
   vote_count: number;  
+  suggestionScoreforToday: number;
 }  
 
 export interface IMovieInputDTO { 
@@ -29,5 +30,6 @@ export interface IMovieInputDTO {
   video: boolean; 
   vote_average: number; 
   vote_count: number;   
+  suggestionScoreforToday: number;
 }  
  
