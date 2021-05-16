@@ -1,5 +1,6 @@
-import { SessionService } from '../services';
+import { SessionService } from '../../services';
 import { Router, Response, Request } from 'express';
+import middlewares from '../middlewares';
 
 const route = Router()
 
@@ -22,7 +23,7 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
     })
 
     // Logout
-    route.delete('/:id', async (req: Request, res: Response) => {
+    route.delete('/:id',middlewares.isAuth, async (req: Request, res: Response) => {
         try { 
             console.log("Logout session " + req.params.id);
             res.status(200).end();

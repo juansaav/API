@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import config from './config'; 
 import { UserDA, ConfigurationDA, MovieDA } from './DA'; 
 import { UserService, ConfigurationService, MovieService, SessionService } from './services'; 
-import { MovieRouter, UserRouter, SessionRouter } from "./routes";
+import { MovieRouter, UserRouter, SessionRouter } from "./api/routes";
 
 // Initial configuration
 

@@ -1,5 +1,6 @@
-import { UserService } from '../services';
+import { UserService } from '../../services';
 import { Router, Response, Request } from 'express';
+import middlewares from '../middlewares';
 
 const route = Router()
 
@@ -7,11 +8,11 @@ export const UserRouter = (router: Router, service: UserService): void => {
     
     router.use('/user', route);
 
-    // Get user
-    route.get('/:id', async (req: Request, res: Response) => {
+    // TODO delete this method Get user by email
+    route.get('/:email', async (req: Request, res: Response) => {
         try {
-            const { id } = req.params;
-            const data = await service.GetUser(id);
+            const { email } = req.params;
+            const data = await service.GetUser(email);
             res.status(200).send(data);
         }
         catch (err) {
@@ -32,7 +33,7 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
 
     // Add favourite movie
-    route.post('/:userId/movie', async (req: Request, res: Response) => {
+    route.post('/:userId/movie', middlewares.isAuth, async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;
             const { movieId } = req.body;
@@ -45,7 +46,7 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
  
     // Get user favourite movies
-    route.get('/:id/movie', async (req: Request, res: Response) => {
+    route.get('/:id/movie', middlewares.isAuth, async (req: Request, res: Response) => {
         try {
             console.log("Get favourite movies")
             const userId = req.params.id;
