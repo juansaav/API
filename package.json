@@ -29,6 +29,7 @@
     "dotenv": "^9.0.1",
     "express": "^4.16.4",
     "express-jwt": "^6.0.0",
+    "express-validator": "^6.11.1",
     "helmet": "^4.6.0",
     "prisma": "^2.22.1",
     "request": "^2.88.2",
