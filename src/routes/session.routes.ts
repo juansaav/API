@@ -1,12 +1,14 @@
 import { SessionService } from '../services';
 import { Router, Response, Request } from 'express';
 
-
+const route = Router()
 
 export const SessionRouter = (router: Router, service: SessionService): void => {
 
+    router.use('/session', route);
+
     // Login
-    router.post('/session', async (req: Request, res: Response) => {
+    route.post('/', async (req: Request, res: Response) => {
         try {
             console.log("Login " + req.body);
             const { email, password } = req.body;
@@ -20,7 +22,7 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
     })
 
     // Logout
-    router.delete('/session/:id', async (req: Request, res: Response) => {
+    route.delete('/:id', async (req: Request, res: Response) => {
         try { 
             console.log("Logout session " + req.params.id);
             res.status(200).end();

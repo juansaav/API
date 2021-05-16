@@ -1,12 +1,14 @@
 import { UserService } from '../services';
 import { Router, Response, Request } from 'express';
 
-
+const route = Router()
 
 export const UserRouter = (router: Router, service: UserService): void => {
- 
+    
+    router.use('/user', route);
+
     // Get user
-    router.get('/user/:id', async (req: Request, res: Response) => {
+    route.get('/:id', async (req: Request, res: Response) => {
         try {
             const { id } = req.params;
             const data = await service.GetUser(id);
@@ -18,7 +20,7 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
 
     // Create user
-    router.post('/user', async (req: Request, res: Response) => {
+    route.post('/', async (req: Request, res: Response) => {
         try {
             const newUser = req.body;
             const data = await service.CreateUser(newUser);
@@ -30,7 +32,7 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
 
     // Add favourite movie
-    router.post('/user/:userId/movie', async (req: Request, res: Response) => {
+    route.post('/:userId/movie', async (req: Request, res: Response) => {
         try {
             const { userId } = req.params;
             const { movieId } = req.body;
@@ -43,7 +45,7 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
  
     // Get user favourite movies
-    router.get('/user/:id/movie', async (req: Request, res: Response) => {
+    route.get('/:id/movie', async (req: Request, res: Response) => {
         try {
             console.log("Get favourite movies")
             const userId = req.params.id;
