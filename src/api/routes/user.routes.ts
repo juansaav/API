@@ -22,14 +22,10 @@ export const UserRouter = (router: Router, service: UserService): void => {
       // lastname not empty
       body('lastName').notEmpty(),
 
+      middlewares.checkValidations,
+
       async (req: Request, res: Response) => {
         try {
-            // Check validation errors
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) { 
-              return res.status(400).json({ errors: errors.array() });
-            }
-
             // Call service
             const newUser = req.body;
             const data = await service.CreateUser(newUser);

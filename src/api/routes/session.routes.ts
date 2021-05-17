@@ -19,14 +19,11 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
         // password is not empty
         body('password').notEmpty(), 
 
+        middlewares.checkValidations,
+
         async (req: Request, res: Response) => {
             try {
-                // Check validation errors
-                const errors = validationResult(req);
-                if (!errors.isEmpty()) { 
-                  return res.status(400).json({ errors: errors.array() });
-                }
-
+                
                 // Call service
                 const { email, password } = req.body;
                 const data = await service.SignIn(email, password);
@@ -39,9 +36,9 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
         })
 
     // Logout
-    route.delete('/:userId',middlewares.isAuth, async (req: any, res: Response) => {
+    route.delete('/',middlewares.isAuth, async (req: any, res: Response) => {
         try { 
-            const { userId } = req.params;
+            const userId  = req.user.id;
             
             // Add token to blocked lists
             BlockedTokens.getInstance().addTokenBlocked(+userId, req.user.token)
