@@ -1,7 +1,7 @@
 import { IMovie } from "./IMovie"; 
 
 export interface IUser {
-  _id?: number;
+  id?: number;
   email: string;
   firstname: string;
   lastname: string;

@@ -3,7 +3,19 @@ import { db } from "../da/dbconnection";
 
 export class UserDA { 
 
-    public async GetUser(email: string): Promise<IUser>  { 
+    public async GetUserId(id: number): Promise<IUser>  { 
+
+        // Get user by Id
+        var user = await db.user.findUnique({
+          where: {
+            id: id,
+          },
+        })
+        return user;
+
+    }
+
+    public async GetUserEmail(email: string): Promise<IUser>  { 
 
         // Get user by email
         var user = await db.user.findUnique({

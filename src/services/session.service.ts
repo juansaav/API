@@ -17,7 +17,7 @@ export class SessionService {
       const userService = new UserService(this.userda);
 
       // User from db
-	    const user = await userService.GetUser(email); 
+	    const user = await userService.GetUserEmail(email); 
 
 	    // Check if exists
 	    if (!user) {
@@ -49,20 +49,20 @@ export class SessionService {
 	    }
   }
 
-  public generateToken(user) {
+  public generateToken(user: IUser) { 
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
- 
-    console.log(`Sign JWT for userId: ${user._id}`);
+
+    // Generate signed token and sign it
+    console.log(`Sign JWT for userId: ${user.id}`);
     return jwt.sign(
       {
-        _id: user._id, // We are gonna use this in the middleware 'isAuth'
-        role: user.role,
-        name: user.name,
-        exp: exp.getTime() / 1000,
+        id: user.id, // We are gonna use this in the middleware 'isAuth'
+        email: user.email
       },
-      config.JWT_SECRET
+      config.JWT_SECRET, 
+      { expiresIn: '1800s' }
     );
   }
 }

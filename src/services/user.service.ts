@@ -10,9 +10,14 @@ export class UserService {
 
     constructor(private userda: UserDA) { }
    
+    // Get User by id
+    public async GetUserId(id: number) {
+        return await this.userda.GetUserId(id); 
+    } 
+
     // Get User by email
-    public async GetUser(email: string) {
-        return await this.userda.GetUser(email); 
+    public async GetUserEmail(email: string) {
+        return await this.userda.GetUserEmail(email); 
     } 
 
     // Get favourite Movies for User
@@ -35,7 +40,7 @@ export class UserService {
         const sessionService = new SessionService(this.userda);         
 
         //Check if email is already in use 
-        var exists = await this.GetUser(userInputDTO.email); 
+        var exists = await this.GetUserEmail(userInputDTO.email); 
         if ( !exists ) {
 
             // Hash pwd using salt. This is used to better secure the pwd

@@ -6,7 +6,13 @@ export class MovieDA {
     public async GetAllMovies() { 
 
         // Return all movies
-        var movies = await  await db.movie.findMany()
+        var movies = await  await db.movie.findMany({
+          orderBy: [
+            {
+              suggestionScoreforToday: 'desc',
+            }
+          ],
+        })
         return movies;
         
     }
