@@ -41,6 +41,7 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
             const userId  = req.user.id;
             
             // Add token to blocked lists
+            console.log("Log out service, userId= " + req.user.id)
             BlockedTokens.getInstance().addTokenBlocked(+userId, req.user.token)
             res.status(200).end();
         }

@@ -24,10 +24,8 @@ export class SessionService {
 	      throw new Error('User not registered');
 	    } 
 
-	    // Verify password using salt
-      console.log('Password argon2 ' + user.password);
-	    const validPassword = await argon2.verify(user.password, password);
-        console.log('Password argon22');
+	    // Verify password using salt 
+	    const validPassword = await argon2.verify(user.password, password); 
 	    if (validPassword) {
 
         // Valid password
@@ -55,7 +53,6 @@ export class SessionService {
     exp.setDate(today.getDate() + 60);
 
     // Generate signed token and sign it
-    console.log(`Sign JWT for userId: ${user.id}`);
     return jwt.sign(
       {
         id: user.id, // We are gonna use this in the middleware 'isAuth'

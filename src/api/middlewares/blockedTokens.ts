@@ -18,22 +18,18 @@ export class BlockedTokens {
     }
  
     // Checks if token is blocked
-    public tokenIsBlocked(userId : number, token: string):boolean {
-        console.log(this.blockedTokens)
+    public tokenIsBlocked(userId : number, token: string):boolean { 
         if (!this.blockedTokens.get(userId)){
             return false;
-        }
-        console.log(this.blockedTokens)
+        } 
         return this.blockedTokens.get(userId).filter(t => t == token).length > 0;     
     }
 
     // Add blocked token to user list
-    public addTokenBlocked(userId : number, token: string) {
-        console.log(this.blockedTokens)
+    public addTokenBlocked(userId : number, token: string) { 
         if (!this.blockedTokens.get(userId)){
             this.blockedTokens.set(userId,[]);
         }
-        this.blockedTokens.get(userId).push(token);
-        console.log(this.blockedTokens)
+        this.blockedTokens.get(userId).push(token); 
     }
 }
