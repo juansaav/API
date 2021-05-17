@@ -18,22 +18,20 @@ export class UserDA {
     public async GetUserEmail(email: string): Promise<IUser>  { 
 
         // Get user by email
-        var user = await db.user.findUnique({
+        return await db.user.findUnique({
           where: {
             email: email,
           },
-        })
-        return user;
+        }) 
 
     }
 
     public async CreateUser(newUser: IUser): Promise<IUser>   {
 
         // Insert user
-        const user = await db.user.create({
+        return await db.user.create({
           data: newUser       
-        })
-        return user;
+        }) 
 
     }
 
@@ -48,9 +46,11 @@ export class UserDA {
             movies: { include: { movie: true } }, 
           },
         }); 
-        // Return only movies
+        // Return only movies 
         const result = user.movies.map(movie => {
-          return movie.movie
+          var movieRet = movie.movie
+          movieRet.addedAt = movie.createdAt;
+          return movieRet;
         })
         return result;
 

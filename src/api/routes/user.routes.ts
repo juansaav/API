@@ -18,9 +18,9 @@ export const UserRouter = (router: Router, service: UserService): void => {
       // password must be at least 5 chars long 
       body('password').isLength({ min: 5 }),
       // firstname not empty
-      body('firstname').notEmpty(),
+      body('firstName').notEmpty(),
       // lastname not empty
-      body('lastname').notEmpty(),
+      body('lastName').notEmpty(),
 
       async (req: Request, res: Response) => {
         try {
@@ -42,19 +42,14 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
 
     // Add favourite movie
-    route.post('/:userId/movie/:movieId', middlewares.isAuth,middlewares.attachUser,
-    async (req: Request, res: Response) => {
+    route.post('/:userId/movie/:movieId', middlewares.isAuth,
+    async (req: any, res: Response) => {
         try { 
 
             const { userId } = req.params;
-
-            // Check that token corresponds to user
-            if (req.user.id != userId) { 
-              return res.status(401).json("Invalid Token");
-            }
+            const { movieId } = req.params;            
 
             // Call service
-            const { movieId } = req.params;
             const data = await service.AddFavouriteMovie(+userId, +movieId);
             res.status(200).send(data);
         }
@@ -65,16 +60,12 @@ export const UserRouter = (router: Router, service: UserService): void => {
     })
      
     // Get user favourite movies
-    route.get('/:id/movie', middlewares.isAuth,middlewares.attachUser, async (req: Request, res: Response) => {
+    route.get('/:userId/movie', middlewares.isAuth, async (req: any, res: Response) => {
         try {
 
-            const userId = req.params.id;
-            
-            // Check that token corresponds to user
-            if (req.user.id != userId) { 
-              return res.status(401).json("Invalid Token");
-            }
+            const userId = req.params.userId;
 
+            // Call service
             const data = await service.GetFavouriteMovies(+userId);
             res.status(200).send(data);
         }

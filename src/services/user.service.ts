@@ -50,8 +50,8 @@ export class UserService {
             // Create user 
             const user = await this.userda.CreateUser({
                     email: userInputDTO.email,
-                    firstname: userInputDTO.firstname,
-                    lastname: userInputDTO.lastname,
+                    firstName: userInputDTO.firstName,
+                    lastName: userInputDTO.lastName,
                     salt: salt.toString('hex'),
                     password: hashedPassword,
                   });

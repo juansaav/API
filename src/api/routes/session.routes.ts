@@ -2,6 +2,7 @@ import { SessionService } from '../../services';
 import { Router, Response, Request } from 'express';
 import middlewares from '../middlewares';
 import { body, validationResult, param } from 'express-validator';
+import { BlockedTokens } from '../middlewares/blockedTokens';
 
 const route = Router()
 
@@ -12,34 +13,38 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
     // Login
     route.post('/', 
 
-        // Validations //      
+        // Validations     
         // email is not empty
         body('email').notEmpty(),
         // password is not empty
         body('password').notEmpty(), 
 
         async (req: Request, res: Response) => {
-        try {
-            // Check validation errors
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) { 
-              return res.status(400).json({ errors: errors.array() });
-            }
+            try {
+                // Check validation errors
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) { 
+                  return res.status(400).json({ errors: errors.array() });
+                }
 
-            // Call service
-            const { email, password } = req.body;
-            const data = await service.SignIn(email, password);
-            res.status(200).send(data);
-        }
-        catch (err) {
-            console.log(err.message);             
-            res.status(500).send(err.message)
-        }
-    })
+                // Call service
+                const { email, password } = req.body;
+                const data = await service.SignIn(email, password);
+                res.status(200).send(data);
+            }
+            catch (err) {
+                console.log(err.message);             
+                res.status(500).send(err.message)
+            }
+        })
 
     // Logout
-    route.delete('/:id',middlewares.isAuth, async (req: Request, res: Response) => {
+    route.delete('/:userId',middlewares.isAuth, async (req: any, res: Response) => {
         try { 
+            const { userId } = req.params;
+            
+            // Add token to blocked lists
+            BlockedTokens.getInstance().addTokenBlocked(+userId, req.user.token)
             res.status(200).end();
         }
         catch (err) {         

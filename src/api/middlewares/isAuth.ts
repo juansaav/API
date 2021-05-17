@@ -1,22 +1,37 @@
-import config from '../../config'; 
-import jwt from 'express-jwt';
+const jwt = require('jsonwebtoken');
+import config from '../../config';  
+import { BlockedTokens } from '../middlewares/blockedTokens';
 
-const getTokenFromHeader = req => {
-  // Get token from header
-  if (
-    (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer')
-  ) {
-    return req.headers.authorization.split(' ')[1];
-  }
-  return null;
-};
+// Checks the token sent
+function authenticateToken(req, res, next) {
+  console.log("authenticateToken")
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1]
 
-const isAuth = jwt({
-  secret: config.JWT_SECRET, // The _secret_ to sign the JWTs
-  algorithms: ['HS256'], // JWT Algorithm
-  userProperty: 'token', // Use req.token to store the JWT
-  getToken: getTokenFromHeader // How to extract the JWT from the request
-});
+  if (token == null) return res.sendStatus(401)
 
+  jwt.verify(token, config.JWT_SECRET, (err: any, user: any) => {
+    console.log()
+    // Validate token
+    if (err) return res.sendStatus(401)
 
-export default isAuth;
+    // Check that token corresponds to user
+    if (req.params.userId != user.id) { 
+      return res.sendStatus(403);
+    }    
+
+    // Check blocked tokens list
+    console.log(user.id)
+    if (BlockedTokens.getInstance().tokenIsBlocked(+user.id, token)){
+      return res.sendStatus(401)
+    }
+
+    // Attach user data
+    req.user = user
+    req.user.token = token
+
+    next()
+  })
+}
+
+export default authenticateToken

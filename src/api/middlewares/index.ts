@@ -1,7 +1,7 @@
-import isAuth from './isAuth';
-import attachUser from './attachUser';
+import isAuth from './isAuth'; 
+import { BlockedTokens } from './blockedTokens'; 
 
 export default {
   isAuth,
-  attachUser
+  BlockedTokens
 };
