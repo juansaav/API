@@ -13,6 +13,7 @@ const firstName = "Test firstName";
 const lastName = "Test lastName";
 var token;
 var userId;
+var movieId;
 
 // Try create user with invalid data
 it('POST /user should get validations errors.', async function () {
@@ -82,6 +83,7 @@ it('Many tests authenticated ', function() {
                                 expect(res.status).equals(200);
                                 expect(res.body).to.be.an('array');
                                 done();
+                                movieId = res.body[0].id;
                             });
                   });  
 
@@ -107,7 +109,19 @@ it('Many tests authenticated ', function() {
                             .end(function(err, res) {
                                 expect(res.status).equals(200);
                                 expect(res.body).to.be.an('array').of.length(0);
-                                done();
+                                done(); 
+                            });
+                  });
+
+                  // Add favourite movies
+                  it('POST user/userId/movie/id ', function(done) {
+                    var req = request(app).post('user/'+userId+'/movie/'+ movieId) // revised
+                            .set("Authorization", "Bearer " + token) 
+                            .send()
+                            .expect('Content-Type', /json/)
+                            .expect(200)
+                            .end(function(err, res) {
+                                expect(res.status).equals(200); 
                                 doneAuth();
                             });
                   });

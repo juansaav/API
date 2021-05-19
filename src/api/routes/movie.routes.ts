@@ -9,12 +9,12 @@ export const MovieRouter = (router: Router, service: MovieService): void => {
     router.use('/movie', route);
 
     // Return all moveis
-    route.get('/', middlewares.isAuth, async (req: Request, res: Response) => {
+    route.get('/', middlewares.isAuth, async (req, res: Response) => {
         try { 
             var data; 
             if (req.query.keyWord){
                 // Return filtered movies
-                 data = await service.GetMoviesFiltered(req.query.keyWord);
+                 data = await service.GetMoviesFiltered((req.query as any).query.keyWord);
             } else {                
                 // Return all movies
                  data = await service.GetAllMovies();
