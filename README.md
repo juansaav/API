@@ -19,7 +19,8 @@ It also uses:
 
 ## Run the app 
 
-    npm start
+   npx ts-node src
+   
 Default port: 7000 (.env file)
 
 ## Run the tests
