@@ -48,7 +48,7 @@ export class UserDA {
         }); 
         // Return only movies 
         const result = user.movies.map(movie => {
-          var movieRet = movie.movie
+          var movieRet = <IMovie> movie.movie
           movieRet.addedAt = movie.createdAt;
           return movieRet;
         })
