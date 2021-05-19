@@ -28,7 +28,7 @@ Default port: 7000 (.env file)
 
 # REST API
 
-The REST API is described below. Only "Create user" and "Login" services are public. For the rest you must add an Authorization header "Bearer token" in order to call them.
+The REST API is described below. Only "Create user" and "Login" services are public. For the rest you must add an Authorization header "Bearer token" in order to call them. You can also import the Postman project "postman_movies.json" from the root folder to test the API.
 
 ## Create user
 
