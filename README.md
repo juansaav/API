@@ -65,19 +65,19 @@ The REST API is described below.
 	user: userData
 }
 
-## Logout
+## Logout (authenticated)
 
 ### Request
-Authorization: Bearer token....
 `DELETE /session`
+Authorization: Bearer token....
 
 ### Response
     HTTP/1.1 200 OK  
 
-## Get movies filtered by a keyWord
+## Get movies filtered by a keyWord (authenticated)
 ### Request
-Authorization: Bearer token....
 `GET /movie?keyWord=keyWord1`
+Authorization: Bearer token....
 
 
 ### Response
@@ -97,20 +97,20 @@ Returns list of movies
 	}
 ]
 
-## Add movie to favourites
+## Add movie to favourites (authenticated)
 
 ### Request
-Authorization: Bearer token....
 `GET user/userId1/movie/movieId1`
+Authorization: Bearer token....
 
 ### Response 
     HTTP/1.1 200 OK 
 
-## Get favourites user movies
+## Get favourites user movies (authenticated)
 
 ### Request
-Authorization: Bearer token....
 `GET user/userId1/movie`
+Authorization: Bearer token....
 
 ### Response 
     HTTP/1.1 200 OK 
