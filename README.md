@@ -1,14 +1,17 @@
 # RESTful API example 
 
-This is an example of a RESTful API written in:
-- Node js
-- Typescript js
+This is an example of a RESTful API that queries some movies from themoviedb.org and lets you register and select your favourites movies. It is written with:
+
+- Node.js
+- Typescript.js
+- Express.js
 
 It also uses:
 - SQLite3
 - Prisma 
 - express-validator
 - mocha & chai & supertest
+
 
 ## Install dependencies
 
@@ -25,7 +28,7 @@ Default port: 7000 (.env file)
 
 # REST API
 
-The REST API is described below.
+The REST API is described below. Only "Create user" and "Login" services are public. For the rest you must add an Authorization header "Bearer token" in order to call them.
 
 ## Create user
 
