@@ -6,10 +6,16 @@ import * as request from "request-promise-native";
 export class MovieService {
 
     constructor(private movieda: MovieDA) { }
-   
+
+    // Get movies filtered by keyWord
+    public async GetMoviesFiltered(keyWord: string): Promise<IMovie[]> {
+        console.log("Get movies keyword: " + keyWord)
+        return await this.movieda.GetMoviesByKey(keyWord);          
+    } 
+
     // Get all movies
-    public async GetAllMovies() {
-        console.log("Get all movies")
+    public async GetAllMovies(): Promise<IMovie[]> {
+        console.log("Get all movies ")
         return await this.movieda.GetAllMovies();          
     } 
 

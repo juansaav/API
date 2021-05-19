@@ -11,8 +11,14 @@ export const MovieRouter = (router: Router, service: MovieService): void => {
     // Return all moveis
     route.get('/', middlewares.isAuth, async (req: Request, res: Response) => {
         try { 
-            // Call service
-            const data = await service.GetAllMovies();
+            var data; 
+            if (req.query.keyWord){
+                // Return filtered movies
+                 data = await service.GetMoviesFiltered(req.query.keyWord);
+            } else {                
+                // Return all movies
+                 data = await service.GetAllMovies();
+            }
             res.status(200).send(data);
         }
         catch (err) { 
