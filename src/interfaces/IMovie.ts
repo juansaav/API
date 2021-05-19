@@ -14,7 +14,7 @@ export interface IMovie {
   vote_average: number; 
   vote_count: number;  
   suggestionScoreforToday: number;
-  addedAt: string;
+  addedAt: Date;
 }  
 
 export interface IMovieInputDTO { 

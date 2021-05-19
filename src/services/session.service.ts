@@ -10,7 +10,7 @@ export class SessionService {
   constructor(private userda: UserDA ) { }
 
   // Login service  
-  public async SignIn(email: string, password: string): Promise<{ token: string }> {
+  public async SignIn(email: string, password: string): Promise<{ token: string, user:IUser }> {
 
       console.log('Sign in service email:' + email);
       
@@ -40,14 +40,14 @@ export class SessionService {
         Reflect.deleteProperty(user, 'salt');
 
 	      // Return token 
-	      return { token };
+	      return { token:token, user:user };
         
 	    } else {
 	      throw new Error('Invalid Password');
 	    }
   }
 
-  public generateToken(user: IUser) { 
+  public generateToken(user: IUser): string { 
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
