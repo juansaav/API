@@ -14,9 +14,10 @@ It also uses:
 
     npm install
 
-## Run the app
+## Run the app 
 
     npm start
+Default port: 7000 (.env file)
 
 ## Run the tests
 
@@ -24,14 +25,12 @@ It also uses:
 
 # REST API
 
-The REST API to the example app is described below.
+The REST API is described below.
 
 ## Create user
 
 ### Request
-
 `POST /user`
-
 {
 	email: "test@test.com",
 	firstName= "first name",
@@ -40,7 +39,6 @@ The REST API to the example app is described below.
 }
 
 ### Response
-
     HTTP/1.1 200 OK 
 {
 	id:1,
@@ -53,7 +51,6 @@ The REST API to the example app is described below.
 ## Login
 
 ### Request
-
 `POST /session`
 
 {
@@ -62,22 +59,29 @@ The REST API to the example app is described below.
 }
 
 ### Response
-
     HTTP/1.1 200 OK  
 {
 	token:"tokendata...",
 	user: userData
 }
 
-## Get movies by keyWOrd
+## Logout
 
 ### Request
+Authorization: Bearer token....
+`DELETE /session`
 
+### Response
+    HTTP/1.1 200 OK  
+
+## Get movies filtered by a keyWord
+### Request
+Authorization: Bearer token....
 `GET /movie?keyWord=keyWord1`
 
 
 ### Response
-Returns list of movies filtered by keyWord
+Returns list of movies 
 
     HTTP/1.1 200 OK 
 [
@@ -96,7 +100,7 @@ Returns list of movies filtered by keyWord
 ## Add movie to favourites
 
 ### Request
-
+Authorization: Bearer token....
 `GET user/userId1/movie/movieId1`
 
 ### Response 
@@ -105,12 +109,12 @@ Returns list of movies filtered by keyWord
 ## Get favourites user movies
 
 ### Request
-
+Authorization: Bearer token....
 `GET user/userId1/movie`
 
 ### Response 
     HTTP/1.1 200 OK 
-Returns list of movies filtered by keyWord
+Returns list of favourites movies of the user
 
     HTTP/1.1 200 OK 
 [
