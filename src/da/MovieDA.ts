@@ -3,14 +3,7 @@ import { db } from "../da/dbconnection";
 
 export class MovieDA { 
 
-    public async GetAllMovies() { 
-
-        // Return all movies
-        var movies = await  await db.movie.findMany()
-        return movies;
-        
-    }
-
+    // Create movie
     public async CreateMovie(newMovie: IMovieInputDTO) {
 
         // Insert movies
@@ -20,6 +13,71 @@ export class MovieDA {
         })
         return movie;
 
+    }
+    
+    // Return all movies
+    public async GetAllMovies(): Promise<IMovie[]> { 
+        var movies = await  await db.movie.findMany({
+          orderBy: [
+            {
+              suggestionScoreforToday: 'desc',
+            }
+          ],
+        })
+        return movies;
+    }
+
+    // Return all movies filtered by keyword
+    public async GetMoviesByKey(keyWord: string ): Promise<IMovie[]> { 
+
+        var movies = await  await db.movie.findMany({
+            where: {
+              OR: [
+              {
+                backdrop_path: {
+                  contains: keyWord,
+                },
+              },  
+              {
+                original_language: {
+                  contains: keyWord,
+                },
+              }, 
+              {
+                original_title: {
+                  contains: keyWord,
+                },
+              }, 
+              {
+                overview: {
+                  contains: keyWord,
+                },
+              }, 
+              {
+                poster_path: {
+                  contains: keyWord,
+                },
+              }, 
+              {
+                release_date: {
+                  contains: keyWord,
+                },
+              }, 
+              {
+                title: {
+                  contains: keyWord,
+                },
+              }, 
+            ],
+          },
+          orderBy: [
+            {
+              suggestionScoreforToday: 'desc',
+            }
+          ],
+        })
+        return movies;
+        
     }
  
 }

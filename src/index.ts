@@ -29,12 +29,23 @@ SessionRouter(router, new SessionService(new UserDA()));
 // Start app
 
 app.listen(config.PORT, function() {  
-   console.log("##############################\n"+
-   	           "Server is running on port " + config.PORT + "\n" + 
-   	           "##############################");
+   //console.log("##############################\n"+
+   //	           "Server is running on port " + config.PORT + "\n" + 
+   //	           "##############################");
 
    // Import movies if required
    let configService = new ConfigurationService(new ConfigurationDA(), new MovieDA());
    configService.importMovies();
 
 });
+
+/**
+     * Handle 401 thrown by express-jwt library
+     */
+app.use((err, req, res, next) => {  
+if (err.name === 'UnauthorizedError') {    
+	res.status(401).json({"error" : err.name + ": " + err.message})  
+}})
+
+// For tests
+export default app

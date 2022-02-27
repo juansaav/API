@@ -8,13 +8,23 @@ export const MovieRouter = (router: Router, service: MovieService): void => {
  
     router.use('/movie', route);
 
-    route.get('/', middlewares.isAuth, async (req: Request, res: Response) => {
+    // Return moveis
+    route.get('/', middlewares.isAuth, async (req, res: Response) => {
         try { 
-            const data = await service.GetAllMovies();
+            var data; 
+            console.log(req.query)
+            if (req.query.keyWord){
+                // Return filtered movies
+                 data = await service.GetMoviesFiltered((req.query as any).keyWord);
+            } else {                
+                // Return all movies
+                 data = await service.GetAllMovies();
+            }
             res.status(200).send(data);
         }
-        catch (err) {
-            res.status(500).send({ "err": err })
+        catch (err) { 
+            console.log(err.message);            
+            res.status(500).send(err.message)
         }
     })
 }

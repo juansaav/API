@@ -9,56 +9,57 @@ import config from '../config';
 export class SessionService {
   constructor(private userda: UserDA ) { }
 
-  
-  public async SignIn(email: string, password: string): Promise<{ user: IUser; token: string }> {
+  // Login service  
+  public async SignIn(email: string, password: string): Promise<{ token: string, user:IUser }> {
 
-      console.log('Sign in service');
+      console.log('Sign in service email:' + email);
       
       const userService = new UserService(this.userda);
 
       // User from db
-	    const user = await userService.GetUser(email); 
+	    const user = await userService.GetUserEmail(email); 
 
 	    // Check if exists
 	    if (!user) {
 	      throw new Error('User not registered');
 	    } 
 
-	    // Verify password using salt
-	    const validPassword = await argon2.verify(user.password, password);
+	    // Verify password using salt 
+	    const validPassword = await argon2.verify(user.password, password); 
 	    if (validPassword) {
 
+        // Valid password
 	      console.log('Password is valid');
 
 	      // Generate token
 	      console.log('Generate JWT');
 	      const token = this.generateToken(user);
 
-          // Delete sensible data
-          Reflect.deleteProperty(user, 'password');
-          Reflect.deleteProperty(user, 'salt');
+        // Delete sensible data
+        Reflect.deleteProperty(user, 'password');
+        Reflect.deleteProperty(user, 'salt');
 
-	      // Return user and token 
-	      return { user, token };
+	      // Return token 
+	      return { token:token, user:user };
+        
 	    } else {
 	      throw new Error('Invalid Password');
 	    }
   }
 
-  public generateToken(user) {
+  public generateToken(user: IUser): string { 
     const today = new Date();
     const exp = new Date(today);
     exp.setDate(today.getDate() + 60);
- 
-    console.log(`Sign JWT for userId: ${user._id}`);
+
+    // Generate signed token and sign it
     return jwt.sign(
       {
-        _id: user._id, // We are gonna use this in the middleware 'isAuth'
-        role: user.role,
-        name: user.name,
-        exp: exp.getTime() / 1000,
+        id: user.id, // We are gonna use this in the middleware 'isAuth'
+        email: user.email
       },
-      config.JWT_SECRET
+      config.JWT_SECRET, 
+      { expiresIn: '1800s' }
     );
   }
 }

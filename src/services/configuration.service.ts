@@ -9,12 +9,14 @@ let MOVIES_MIGRATION_KEY = "movies_imported";
 export class ConfigurationService {
 
     constructor(private configda: ConfigurationDA,private movieda: MovieDA) { } 
-   
+    
+    // Check import movies
     public async importMovies() {
         try {
-            
-            const data = await this.configda.GetConfiguration(MOVIES_MIGRATION_KEY);
             const movieService = new MovieService(this.movieda);
+            
+            // Check previous import
+            const data = await this.configda.GetConfiguration(MOVIES_MIGRATION_KEY);
 
             if ( !data ) {
               
@@ -31,8 +33,7 @@ export class ConfigurationService {
             } else {
                 console.log("Movies already imported on " + data.value + ".")
             }
-        } catch (error) {
-            console.log("Error importing movies: " + error)
+        } catch (error) { 
             throw error;
         }
     }  

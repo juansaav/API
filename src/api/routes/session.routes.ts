@@ -2,6 +2,7 @@ import { SessionService } from '../../services';
 import { Router, Response, Request } from 'express';
 import middlewares from '../middlewares';
 import { body, validationResult, param } from 'express-validator';
+import { BlockedTokens } from '../middlewares/blockedTokens';
 
 const route = Router()
 
@@ -12,39 +13,41 @@ export const SessionRouter = (router: Router, service: SessionService): void => 
     // Login
     route.post('/', 
 
-        // Validations //      
+        // Validations     
         // email is not empty
         body('email').notEmpty(),
         // password is not empty
         body('password').notEmpty(), 
 
-        async (req: Request, res: Response) => {
-        try {
-            // Check validation errors
-            const errors = validationResult(req);
-            if (!errors.isEmpty()) { 
-              return res.status(400).json({ errors: errors.array() });
-            }
+        middlewares.checkValidations,
 
-            // Call service
-            const { email, password } = req.body;
-            console.log(email + password);
-            const data = await service.SignIn(email, password);
-            res.status(200).send(data);
-        }
-        catch (err) {
-            res.status(500).send({ "err": err })
-        }
-    })
+        async (req: Request, res: Response) => {
+            try {
+                
+                // Call service
+                const { email, password } = req.body;
+                const data = await service.SignIn(email, password);
+                res.status(200).send(data);
+            }
+            catch (err) {
+                console.log(err.message);             
+                res.status(500).send(err.message)
+            }
+        })
 
     // Logout
-    route.delete('/:id',middlewares.isAuth, async (req: Request, res: Response) => {
+    route.delete('/',middlewares.isAuth, async (req: any, res: Response) => {
         try { 
-            console.log("Logout session " + req.params.id);
+            const userId  = req.user.id;
+            
+            // Add token to blocked lists
+            console.log("Log out service, userId= " + req.user.id)
+            BlockedTokens.getInstance().addTokenBlocked(+userId, req.user.token)
             res.status(200).end();
         }
-        catch (err) {
-            res.status(500).send({ "err": err })
+        catch (err) {         
+            console.log(err.message);    
+            res.status(500).send(err.message)
         }
     })
 }

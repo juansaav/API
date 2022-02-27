@@ -6,25 +6,30 @@ import * as request from "request-promise-native";
 export class MovieService {
 
     constructor(private movieda: MovieDA) { }
-   
-    public async GetAllMovies() {
-        try {
-            const data = await this.movieda.GetAllMovies();
-            return data;
-        } catch (error) {
-            throw error;
-        }
+
+    // Get movies filtered by keyWord
+    public async GetMoviesFiltered(keyWord: string): Promise<IMovie[]> {
+        console.log("Get movies keyword: " + keyWord)
+        return await this.movieda.GetMoviesByKey(keyWord);          
     } 
 
+    // Get all movies
+    public async GetAllMovies(): Promise<IMovie[]> {
+        console.log("Get all movies ")
+        return await this.movieda.GetAllMovies();          
+    } 
+
+    // Insert list of movies
     public async InsertMovies(movies : [IMovieInputDTO]) {
+        console.log("Insert movies")
         for (var newM of movies) {
+            newM.suggestionScoreforToday = Math.floor(Math.random() * 100);
             this.movieda.CreateMovie(newM);
-        } 
+        }
     }   
 
-
-    public async ImportMovies() {
-        // Import movies
+    // Import movies from themoviedb
+    public async ImportMovies() { 
         console.log("Importing movies from themoviedb.org...")
         
         const baseUrl = process.env.THEMOVIEDB_URL;

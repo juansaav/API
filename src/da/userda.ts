@@ -3,25 +3,35 @@ import { db } from "../da/dbconnection";
 
 export class UserDA { 
 
-    public async GetUser(email: string): Promise<IUser>  { 
+    public async GetUserId(id: number): Promise<IUser>  { 
 
-        // Get user by email
+        // Get user by Id
         var user = await db.user.findUnique({
           where: {
-            email: email,
+            id: id,
           },
         })
         return user;
 
     }
 
+    public async GetUserEmail(email: string): Promise<IUser>  { 
+
+        // Get user by email
+        return await db.user.findUnique({
+          where: {
+            email: email,
+          },
+        }) 
+
+    }
+
     public async CreateUser(newUser: IUser): Promise<IUser>   {
 
         // Insert user
-        const user = await db.user.create({
+        return await db.user.create({
           data: newUser       
-        })
-        return user;
+        }) 
 
     }
 
@@ -36,9 +46,11 @@ export class UserDA {
             movies: { include: { movie: true } }, 
           },
         }); 
-        // Return only movies
+        // Return only movies 
         const result = user.movies.map(movie => {
-          return movie.movie
+          var movieRet = <IMovie> movie.movie
+          movieRet.addedAt = movie.createdAt;
+          return movieRet;
         })
         return result;
 
